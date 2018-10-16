@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Nasa repository</title>
+	<link rel="stylesheet" href="main.css">
+	<script src="apiConnexion.js"></script>
+</head>
+<body>
+	<header>
+		<h1 class="mainTitle">Bienvenue sur NASA API</h1>
+	</header>
+	<main>
+		<fieldset>
+			<legend class="dateFilterTitle">Choose trip dates</legend>
+			<div>
+				<label class="dateStart" for="start">Start</label>
+				<input type="date" id="start" name="trip"
+				value=""
+				min="1900-01-01" max="2018-12-31" />
+			</div>
+			<div>
+				<label class="dateEnd" for="end">End</label>
+				<input type="date" id="end" name="trip"
+				value=""
+				min="1900-01-01" max="2018-12-31"/ >
+			</div>
+		</fieldset>
+		<div class="loader" id="loadingWheel"></div> 
+		<div id="mainDisplay"></div>
+	</main>
+	<footer>
+	</footer>
+</body>
+</html>
