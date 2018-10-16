@@ -9,27 +9,43 @@
 <body>
 	<header>
 		<h1 class="mainTitle">Bienvenue sur NASA API</h1>
+		<div class="flexHeader">
+			<div class='search'>
+				<label class="searchBox" for="searchBox">Rechercher : </label>
+				<input type="text" id="search" name="trip" />
+				<button id="submitButton" type="button">Valider</button><br>
+				<label class="searchOption" for="searchOption">Sur : </label>
+				<form class="searchOptionValue" id="searchOptionValue">
+					<input type="radio" id="title" name="searchOptionValue" value="title"> Titre<br>
+					<input type="radio" id="description" name="searchOptionValue" value="description"> Description<br>				 
+				</form>
+			</div>
+			<fieldset class="DateHeader">
+				<legend class="dateFilterTitle">Choose trip dates</legend>
+				<div>
+					<label class="dateStart" for="start">Start</label>
+					<input type="date" id="start" name="trip"
+					value="1900-01-02"/>
+				</div>
+				<div>
+					<label class="dateEnd" for="end">End</label>
+					<input type="date" id="end" name="trip"
+					value="1900-01-02"/>
+				</div>
+			</fieldset>
+		</div>
 	</header>
 	<main>
-		<fieldset>
-			<legend class="dateFilterTitle">Choose trip dates</legend>
-			<div>
-				<label class="dateStart" for="start">Start</label>
-				<input type="date" id="start" name="trip"
-				value=""
-				min="1900-01-01" max="2018-12-31" />
-			</div>
-			<div>
-				<label class="dateEnd" for="end">End</label>
-				<input type="date" id="end" name="trip"
-				value=""
-				min="1900-01-01" max="2018-12-31"/ >
-			</div>
-		</fieldset>
-		<div class="loader" id="loadingWheel"></div> 
-		<div id="mainDisplay"></div>
+		<div id= "popImage" hidden="">
+			<button id="echapBouton"></button>
+		</div>
+		<div class="hourglass_container">
+			<div id="loadingWheel" class="lds-hourglass"></div>
+		</div>
+		<div class="flewMainDisplay" id="mainDisplay"></div>
 	</main>
 	<footer>
+		<p>Made by Elio and Fifi</p>
 	</footer>
 </body>
 </html>
