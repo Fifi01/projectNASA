@@ -30,8 +30,8 @@ window.onload = function(){
         console.log(event.explicitOriginalTarget.attributes.src.value);
         var imageGrande = document.createElement("img");
         imageGrande.setAttribute("src", event.explicitOriginalTarget.attributes.src.value);
-        imageGrande.setAttribute("class", "imagePopUp");
-        document.getElementById("popImage").appendChild(imageGrande);
+        imageGrande.setAttribute("id", "imagePopUp");
+                document.getElementById("popImage").appendChild(imageGrande);
         document.getElementById("popImage").style.display = "block";
       } 
     });
@@ -39,6 +39,7 @@ window.onload = function(){
 
     document.getElementById("echapBouton").addEventListener("click", function(){
       document.getElementById("popImage").style.display = "none";
+      document.getElementById("popImage").removeChild(document.getElementById("imagePopUp"));
     }); 
 
 
