@@ -5,7 +5,6 @@ window.onload = function(){
 
   function initialisation(){
     var iniDate = new Date();
-    console.log((iniDate.getFullYear()).toString()+"-"+(iniDate.getMonth()+1).toString()+"-"+ (iniDate.getDate()).toString());
     document.getElementById("start").value = (iniDate.getFullYear()).toString()+"-"+(iniDate.getMonth()+1).toString()+"-"+ (iniDate.getDate()-5).toString();
     document.getElementById("end").value = (iniDate.getFullYear()).toString()+"-"+(iniDate.getMonth()+1).toString()+"-"+ (iniDate.getDate()).toString();
     compareDate();
@@ -14,35 +13,41 @@ window.onload = function(){
   }
   
   function eventListener(){
+
+    //changement date debut
     document.getElementById("start").addEventListener("input", function (e) {
       document.getElementById("mainDisplay").innerHTML = "";
       compareDate();
     });
 
+    //changement date fin
     document.getElementById("end").addEventListener("input", function (e) {
       document.getElementById("mainDisplay").innerHTML = "";
       compareDate();
     });
 
+    //Click sur une image
     document.addEventListener("click", function(event){
-
       if(event.explicitOriginalTarget.className != null && event.explicitOriginalTarget.className == "planetImage"){
-        console.log(event.explicitOriginalTarget.attributes.src.value);
         var imageGrande = document.createElement("img");
         imageGrande.setAttribute("src", event.explicitOriginalTarget.attributes.src.value);
         imageGrande.setAttribute("id", "imagePopUp");
-                document.getElementById("popImage").appendChild(imageGrande);
+        document.getElementById("popImage").innerHTML = "";
+        var echap = document.createElement("button");
+        echap.setAttribute("id", "echapBouton");
+
+        document.getElementById("popImage").appendChild(echap);
+        document.getElementById("echapBouton").addEventListener("click", function(){
+          document.getElementById("popImage").style.display = "none";
+          document.getElementById("popImage").removeChild(document.getElementById("imagePopUp"));
+        }); 
+        document.getElementById("popImage").appendChild(imageGrande);
         document.getElementById("popImage").style.display = "block";
       } 
     });
 
 
-    document.getElementById("echapBouton").addEventListener("click", function(){
-      document.getElementById("popImage").style.display = "none";
-      document.getElementById("popImage").removeChild(document.getElementById("imagePopUp"));
-    }); 
-
-
+    //clique sur le boutton valider
     document.getElementById("submitButton").addEventListener("click", function(e) {
       document.getElementById("mainDisplay").innerHTML = "";
       var element = document.getElementById("search").value;
@@ -58,6 +63,7 @@ window.onload = function(){
       searchElement(element, searchOption, 0);
     });
 
+    //appuie sur echap
     document.addEventListener('keydown', (event) => {
       if(event.key === "Escape"){
         document.getElementById("popImage").style.display = "none";
@@ -65,9 +71,7 @@ window.onload = function(){
 
     });
 
-
-
-
+    //appuie sur entrer
     document.getElementById("search").addEventListener("keyup", function(event) {
       event.preventDefault();
       if (event.keyCode === 13) {
@@ -83,9 +87,6 @@ window.onload = function(){
     dateMax = document.getElementById("end").value;
     var today = new Date ((iniDate.getFullYear()).toString()+"-"+(iniDate.getMonth()+1).toString()+"-"+ (iniDate.getDate()).toString());
     if(new Date(dateMin).getTime() <= new Date(dateMax).getTime()){
-      // PB IFFFFFFFFFFFFF
-      console.log("MAX : " + new Date(dateMax).getTime());
-      console.log("TODAY : " + today.getTime());
       if(new Date(dateMax).getTime() <= today.getTime()){
         httpGetNasaInformation()
         
@@ -112,26 +113,56 @@ window.onload = function(){
   function updateMainDisplay(resultat){
     document.getElementById("mainDisplay").innerHTML = "";
     var htmlContent="";
-    console.log(resultat);
     resultat.forEach(function(element){
+
+
       var planetDiv = document.createElement("div");
       planetDiv.setAttribute("class", "planetDiv");
       document.getElementById("mainDisplay").appendChild(planetDiv);
+
+      var planetDate = document.createElement("p");
+      planetDate.setAttribute("class", "planetDate");
+      var planetAuthor = document.createElement("p");
+      planetAuthor.setAttribute("class", "planetAuthor");
+
+      planetDiv.appendChild(planetDate);
+      planetDiv.appendChild(planetAuthor);
+
+      planetDate.innerHTML = "Date : " +  element.date;
+      planetAuthor.innerHTML = "Auteur : " + element.copyright;
+
       var planetFlex = document.createElement("div");
       planetFlex.setAttribute("class","planetFlex");
       var planetTitle = document.createElement("h3");
       planetTitle.setAttribute("class", "planetTitle");
       planetDiv.appendChild(planetTitle);
       planetDiv.appendChild(planetFlex);
-      var planetImage = document.createElement("img");
-      planetImage.setAttribute("src", element.url);
-      planetImage.setAttribute("class", "planetImage");
-      planetFlex.appendChild(planetImage);
+
+      if(element.media_type == "image")
+      {
+        var planetImage = document.createElement("img");
+        planetImage.setAttribute("src", element.url);
+        planetImage.setAttribute("class", "planetImage");
+        planetFlex.appendChild(planetImage);
+      }
+      if(element.media_type == "video")
+      {
+        var planetVideo = document.createElement("IFRAME");
+        planetVideo.setAttribute("src", element.url);
+        planetVideo.setAttribute("class", "planetVideo");
+        planetFlex.appendChild(planetVideo);
+      }
       var planetDescription = document.createElement("p");
       planetDescription.setAttribute("class", "planetDescription");
       planetFlex.appendChild(planetDescription);
       planetDescription.innerHTML = element.explanation;
       planetTitle.innerHTML = element.title;
+
+      var planetLink = document.createElement("a");
+      planetLink.setAttribute("class", "planetLink");
+      planetLink.setAttribute("href", element.url);
+      planetDiv.appendChild(planetLink);
+      planetLink.innerHTML = "Lire plus";
     });
   }
 
@@ -146,20 +177,14 @@ window.onload = function(){
       if (this.status === 200) {
         var resultat = JSON.parse(this.responseText);
         if(resultat.length === 0){
-          console.log("VIDE");
           document.getElementById("loadingWheel").style.display = "none";
           clearMain();
         }
         else{
           if(token===1){
-            console.log("testtetsegsdg" + resultat);
-
-            processSearch(element, searchOption, resultat)
-
-            
+            processSearch(element, searchOption, resultat);
           }
           else{
-           console.log("Good");
            document.getElementById("loadingWheel").style.display = "none";
            updateMainDisplay(resultat);
          }
@@ -188,7 +213,6 @@ function processSearch(element, searchOption, data){
  if(searchCategory === "description")
  {
   var result = data.filter(function(article) {
-    console.log(article.explanation.toString().search(searchValue));
     if(article.explanation.toString().search(searchValue) !== -1)
     {
       return article.date;
@@ -210,7 +234,4 @@ if(document.getElementById("mainDisplay").innerHTML === ""){
   clearMain();
 }
 }
-
-
 };
-

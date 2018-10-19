@@ -6,38 +6,40 @@
 	<link rel="stylesheet" href="main.css">
 	<script src="apiConnexion.js"></script>
 </head>
-<body>
+<body class="body">
 	<header>
+		<img class="nasa_logo" src="nasa.svg"> 
 		<h1 class="mainTitle">Bienvenue sur NASA API</h1>
+		<hr>
 		<div class="flexHeader">
 			<div class='search'>
 				<label class="searchBox" for="searchBox">Rechercher : </label>
 				<input type="text" id="search" name="trip" />
-				<button id="submitButton" type="button">Valider</button><br>
+				<button id="submitButton" class="buttonSearch" type="button">Valider</button><br>
 				<label class="searchOption" for="searchOption">Sur : </label>
 				<form class="searchOptionValue" id="searchOptionValue">
 					<input type="radio" id="title" name="searchOptionValue" value="title"> Titre<br>
-					<input type="radio" id="description" name="searchOptionValue" value="description"> Description<br>				 
+					<input type="radio" id="description" name="searchOptionValue" value="description" checked> Description<br>				 
 				</form>
 			</div>
-			<fieldset class="DateHeader">
-				<legend class="dateFilterTitle">Choose trip dates</legend>
+			<div class="DateHeader">
+				<legend class="dateFilterTitle">Choisissez les dates</legend>
 				<div>
-					<label class="dateStart" for="start">Start</label>
+					<label class="dateStart" for="start">Début</label>
 					<input type="date" id="start" name="trip"
 					value="1900-01-02"/>
 				</div>
 				<div>
-					<label class="dateEnd" for="end">End</label>
+					<label class="dateEnd" for="end">Fin</label>
 					<input type="date" id="end" name="trip"
 					value="1900-01-02"/>
 				</div>
-			</fieldset>
+			</div>
 		</div>
+		<hr>
 	</header>
 	<main>
 		<div id= "popImage" hidden="">
-			<button id="echapBouton"></button>
 		</div>
 		<div class="hourglass_container">
 			<div id="loadingWheel" class="lds-hourglass"></div>
@@ -45,7 +47,7 @@
 		<div class="flewMainDisplay" id="mainDisplay"></div>
 	</main>
 	<footer>
-		<p>Made by Elio and Fifi</p>
+		<p>Créé par Elio et Fifi ©2018 All rights reserved</p>
 	</footer>
 </body>
 </html>
